@@ -48,7 +48,6 @@ const useCombinedRefs = (...refs: ReactCropperRef[]): React.RefObject<ReactCropp
     React.useEffect(() => {
         refs.forEach((ref) => {
             if (!ref) return;
-
             if (typeof ref === 'function') {
                 ref(targetRef.current);
             } else {
