@@ -46,8 +46,8 @@ const cropperProps: Array<CropperKeys> = [
     'ready',
 ];
 
-export const cleanImageProps = (imageProps: CropperImageOptions) =>
+export const cleanCanvasProps = (canvasProps: CropperImageOptions) =>
     cropperProps.reduce((acc, key) => {
         const {[key]: _, ...rest} = acc;
         return rest;
-    }, imageProps);
+    }, canvasProps);

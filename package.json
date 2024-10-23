@@ -15,10 +15,10 @@
     "scripts": {
         "test": "jest --coverage --forceExit",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src ./example",
-        "build": "yarn clean && rollup --config rollup.config.mjs",
+        "build": "rollup --config rollup.config.mjs",
         "start": "rollup --config rollup.config.dev.mjs -w",
         "clean": "rimraf dist",
-        "prepublishOnly": "yarn build",
+        "prepublishOnly": "npm build",
         "commit": "git-cz",
         "release": "np"
     },

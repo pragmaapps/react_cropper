@@ -1,16 +1,16 @@
 import React, {useEffect, useRef} from 'react';
 import Cropper from 'cropperjs';
-import {cleanImageProps} from './utils';
+import {cleanCanvasProps} from './utils';
 
 const REQUIRED_IMAGE_STYLES = {opacity: 0, maxWidth: '100%'};
 
-interface ReactCropperElement extends HTMLImageElement {
+interface ReactCropperElement extends HTMLCanvasElement {
     cropper: Cropper;
 }
 
 type ReactCropperRef =
-    | ((instance: HTMLImageElement | ReactCropperElement | null) => void)
-    | React.MutableRefObject<HTMLImageElement | ReactCropperElement | null>
+    | ((instance: HTMLCanvasElement | ReactCropperElement | null) => void)
+    | React.MutableRefObject<HTMLCanvasElement | ReactCropperElement | null>
     | null;
 
 interface ReactCropperDefaultOptions {
@@ -23,8 +23,8 @@ interface ReactCropperDefaultOptions {
 
 interface ReactCropperProps
     extends ReactCropperDefaultOptions,
-        Cropper.Options<HTMLImageElement>,
-        Omit<React.HTMLProps<HTMLImageElement>, 'data' | 'ref' | 'crossOrigin'> {
+        Cropper.Options<HTMLCanvasElement>,
+        Omit<React.HTMLProps<HTMLCanvasElement>, 'data' | 'ref' | 'crossOrigin'> {
     crossOrigin?: '' | 'anonymous' | 'use-credentials' | undefined;
     on?: (eventName: string, callback: () => void | Promise<void>) => void | Promise<void>;
     onInitialized?: (instance: Cropper) => void | Promise<void>;
@@ -60,7 +60,7 @@ const useCombinedRefs = (...refs: ReactCropperRef[]): React.RefObject<ReactCropp
     return targetRef;
 };
 
-const ReactCropper = React.forwardRef<ReactCropperElement | HTMLImageElement, ReactCropperProps>(({...props}, ref) => {
+const ReactCropper = React.forwardRef<ReactCropperElement | HTMLCanvasElement, ReactCropperProps>(({...props}, ref) => {
     const {
         dragMode = 'crop',
         src,
@@ -78,7 +78,7 @@ const ReactCropper = React.forwardRef<ReactCropperElement | HTMLImageElement, Re
         ...rest
     } = props;
     const defaultOptions: ReactCropperDefaultOptions = {scaleY, scaleX, enable, zoomTo, rotateTo};
-    const innerRef = useRef<HTMLImageElement>(null);
+    const innerRef = useRef<HTMLCanvasElement>(null);
     const combinedRef = useCombinedRefs(ref, innerRef);
 
     /**
@@ -122,11 +122,11 @@ const ReactCropper = React.forwardRef<ReactCropperElement | HTMLImageElement, Re
         };
     }, [combinedRef]);
 
-    const imageProps = cleanImageProps({...rest, crossOrigin, src, alt});
+    const canvasProps = cleanCanvasProps({...rest});
 
     return (
         <div style={style} className={className}>
-            <img {...imageProps} style={REQUIRED_IMAGE_STYLES} ref={combinedRef} />
+            <canvas  {...canvasProps} style={REQUIRED_IMAGE_STYLES} ref={combinedRef} />
         </div>
     );
 });
